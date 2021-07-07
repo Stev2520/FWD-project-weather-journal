@@ -1,21 +1,25 @@
 /* Global Variables */
 //OpenWeathermap API key
 const apiKey = "42759c50ec83a021669181d38d7ace61";
+
 // Inputs
 const zipCode = document.getElementById("zip");
 const feelings = document.getElementById("feelings");
-// Last Entry
-const lastEntry = await fetch("/all");
+
+// Last Entry 
 const lastFeelings = document.getElementById("content");
 const lastDate = document.getElementById("date");
 const lastTemp = document.getElementById("temp");
 /* End Global Variables */
 
 // Show last entry
+(async function() {
+    const lastEntry = await fetch("/all");
+    lastDate.textContent = lastEntry.lastDate;
+    lastTemp.textContent = lastEntry.lastTemp;
+    lastFeelings.textContent = lastFeelings.lastDate;
+})();
 
-lastDate.textContent = lastEntry.lastDate;
-lastTemp.textContent = lastEntry.lastTemp;
-lastFeelings.textContent = lastFeelings.lastDate;
 
 // Generating entry using the button
 document.getElementById("generate").addEventListener("click",generateEntry);
