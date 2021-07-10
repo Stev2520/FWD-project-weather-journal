@@ -27,7 +27,7 @@ app.use(cors());
 app.use(express.static("website"));
 
 // Spin up the server
-app.listen(3800,()=>console.log("Server online\nListening to http://loacalhost:4200"));
+app.listen(3800,()=>console.log("Server online\nListening to http://loacalhost:3800"));
 
 // Initialize all route with a callback function
 app.get("/all",getCallback)
@@ -43,4 +43,5 @@ app.post("/entry",entry);
 // Callback function to complete Post "/entry"
 async function entry(req,res){
     projectData = req.body;
+    res.send({});
 }
