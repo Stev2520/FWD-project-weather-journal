@@ -25,18 +25,18 @@ const lastTemp = document.getElementById("temp");
 document.getElementById("generate").addEventListener("click",generateEntry);
 async function generateEntry(){
     let d = new Date();
+    let data = {};
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode.value}&appid=${apiKey}`).json();
-    lastTemp.textContent = response.main.temp - 273.15 + " °C";
-    lastDate.textContent = `${1+d.getMonth()}.${d.getDate()}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
-    lastFeelings.textContent = feelings.value;
+    data.lastTemp = (response.main.temp - 273.15).toFixed(2) + " °C";
+    data.lastDate = `${1+d.getMonth()}.${d.getDate()}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+    data.lastFeelings = feelings.value;
+    lastDate.textContent = data.lastDate;
+    lastTemp.textContent = data.lastTemp;
+    lastFeelings.textContent = data.lastFeelings;
     await fetch("/entry",{
         method: "POST",
         credentials: "same-origin",
         headers:{"Content-Type": "application/json"},
-        body: {
-            lastDate: lastDate.textContent,
-            lastTemp: lastTemp.textContent,
-            lastFeelings: lastFeelings.textContent,
-        }
+        body: JSON.stringify(data);
     })
 }
