@@ -21,7 +21,7 @@ async function updateEntry(){
         lastDate.innerHTML = lastEntry.lastDate;
         lastTemp.innerHTML = lastEntry.lastTemp;
         lastFeelings.innerHTML = lastEntry.lastFeelings;
-    } catch(err) console.log(err);
+    } catch(err) {console.log(err);}
 }
 
 updateEntry();
@@ -29,8 +29,8 @@ updateEntry();
 //Getting Weather Data from OpenWeatherMap API
 async function getWeather(){
     const response = await fetch(apiBase + zipCode.value + "&appid=" + apiKey);
-    try return response.json(); 
-    catch(err) console.log(error);
+    try {return response.json();}
+    catch(err) {console.log(error);}
 }
 
 // Generating entry using the button
