@@ -42,7 +42,6 @@ async function generateEntry(){
     data.lastTemp = weather.main.temp + " °C";
     data.lastDate = `${1+d.getMonth()}.${d.getDate()}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
     data.lastFeelings = feelings.value;
-    };
     await fetch("/entry",{
         method: "POST",
         credentials: "same-origin",
