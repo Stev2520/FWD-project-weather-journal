@@ -11,6 +11,7 @@ const feelings = document.getElementById("feelings");
 const lastFeelings = document.getElementById("content");
 const lastDate = document.getElementById("date");
 const lastTemp = document.getElementById("temp");
+
 /* End Global Variables */
 
 // Updating Entry Holder function
@@ -21,32 +22,45 @@ async function updateEntry(){
         lastDate.innerHTML = lastEntry.lastDate;
         lastTemp.innerHTML = lastEntry.lastTemp;
         lastFeelings.innerHTML = lastEntry.lastFeelings;
-    } catch(err) {console.log(err);}
+    }catch(err){
+        console.log(err);
+    }
 }
 
 updateEntry();
 
 //Getting Weather Data from OpenWeatherMap API
 async function getWeather(){
-    const response = await fetch(apiBase + zipCode.value + "&appid=" + apiKey);
-    try {return response.json();}
-    catch(err) {console.log(error);}
+    let response = await fetch(apiBase + zipCode.value + "&appid=" + apiKey);
+    if(response.status==404) alert("ZIP code not found");
+    console.log(response);
+    try{
+        response = await response.json();
+        return response;
+    }catch(err){    
+        console.log(err);
+    }
 }
 
 // Generating entry using the button
 document.getElementById("generate").addEventListener("click",generateEntry);
 async function generateEntry(){
+    // Getting Entry time
     let d = new Date();
-    let data = {};
-    weather = getWeather();
-    data.lastTemp = weather.main.temp + " °C";
-    data.lastDate = `${1+d.getMonth()}.${d.getDate()}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
-    data.lastFeelings = feelings.value;
+
+    // getting weather data
+    let weather = await getWeather();
+
+    //Posting Entry to server
     await fetch("/entry",{
         method: "POST",
         credentials: "same-origin",
         headers:{"Content-Type": "application/json"},
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+            lastTemp: weather.main.temp + " °C",
+            lastDate: `${1+d.getMonth()}.${d.getDate()}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+            lastFeelings: feelings.value
+        })
     }).then(function(){
         console.log(`Post request at ${d}`);
         updateEntry();

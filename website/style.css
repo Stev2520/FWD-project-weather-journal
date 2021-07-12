@@ -92,11 +92,11 @@ main img
     padding: 10px;
     border-radius: 18px;
 }
-#entry div
+#entryHolder,#content,#temp,#date
+{
+    font-size: 26px;
+}
+#entryHolder:nth-child(1)
 {
     font-size: 36px;
-}
-#date,#temp,#content
-{
-    font-size: 28px;
 }
